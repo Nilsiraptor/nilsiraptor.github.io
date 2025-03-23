@@ -1,0 +1,34 @@
+{
+    "name": "Letterboxd",
+    "short_name": "Letterboxd",
+    "start_url": "/",
+    "display": "standalone",
+    "theme_color": "#445566",
+    "background_color": "#14181C",
+    "description": "Social film discovery.",
+    "icons": [{
+      "src": "https://s.ltrbxd.com/static/img/touch-icon-48x48-8UhExKgZ.png",
+      "sizes": "48x48",
+      "type": "image/png"
+    }, {
+      "src": "https://s.ltrbxd.com/static/img/touch-icon-72x72-DKp5bS0X.png",
+      "sizes": "72x72",
+      "type": "image/png"
+    }, {
+      "src": "https://s.ltrbxd.com/static/img/touch-icon-96x96-Nm2p8RHs.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    }, {
+      "src": "https://s.ltrbxd.com/static/img/touch-icon-144x144-BqBigvMm.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    }, {
+      "src": "https://s.ltrbxd.com/static/img/touch-icon-168x168-C8vE1p4B.png",
+      "sizes": "168x168",
+      "type": "image/png"
+    }, {
+      "src": "https://s.ltrbxd.com/static/img/touch-icon-192x192-lO1g3Ot4.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }]
+  }
