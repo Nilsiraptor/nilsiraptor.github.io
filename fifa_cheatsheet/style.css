@@ -1,0 +1,12 @@
+html {
+    display: inline-block;
+}
+
+div {
+    background-color: #aaaaaa;
+    border-color: aquamarine;
+    color: red;
+    width: 100px;
+    height: 100px;
+    margin: 10px;
+}
