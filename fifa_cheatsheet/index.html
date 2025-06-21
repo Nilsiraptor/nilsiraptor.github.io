@@ -4,7 +4,7 @@
         <meta charset="utf-8"/>
         <title>FC 25 Cheat Sheet</title>
         <meta name="viewport" content="width=device-width"/>
-        <link rel="stylesheet" href="style.css?id=1"/>
+        <link rel="stylesheet" href="style.css?id=2"/>
         <link rel="icon" href="favicon.svg"/>
     </head>
     <body>
@@ -45,7 +45,7 @@
                             <div class="title">Verteidigung</div>
                             <svg height="20" width="20">
                                 <use href="buttons/xbox.svg#a"/>
-                            </svg><div class="item">Schulter Tackle</div>
+                            </svg><div class="item" title="Nur bei fortgeschrittenem Verteidigen">Schulter Tackle⁺</div>
                             <svg height="20" width="20">
                                 <use href="buttons/xbox.svg#b"/>
                             </svg><div class="item">Fuß Tackle</div>
@@ -167,6 +167,33 @@
         </div>
         <div class="base_category container">
             <div class="base_title title">Skill Moves</div>
+            <div class="base_content">
+                <div class="sub_category container">
+                    <div class="title">⭐⭐</div>
+                    <svg height="20" width="40">
+                        <use href="buttons/xbox.svg#r" x="-10"/>
+                        <defs>
+                            <marker
+                                id='head'
+                                orient="auto"
+                                markerWidth='3'
+                                markerHeight='4'
+                                refX='0.1'
+                                refY='2'
+                                >
+                                <path d='M0,0 V4 L2,2 Z' fill="black" />
+                            </marker>
+                        </defs>
+
+                        <path
+                            id='arrow-line'
+                            marker-end='url(#head)'
+                            stroke-width='4'
+                            fill='none' stroke='black'
+                            d='M 25,10 H 40'
+                        />
+                    </svg><div class="item" id="pass">Ballrolle</div>
+            </div>
         </div>
     </body>
 </html>
