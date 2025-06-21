@@ -15,18 +15,26 @@ div {
     flex-grow: 0;
 }
 
-svg {
+svg, .item {
     margin: 5px;
+}
+
+.item {
+    margin-left: 0;
 }
 
 .container {
-    margin: 5px;
     background-color: rgba(200, 200, 255, 0.3);
+    margin: 10px;
+    margin-top: 0;
+    border-radius: 5px;
 }
 
 .title {
+    margin: 5px;
     grid-column-start: span 2;
     text-align: center;
+    font-weight: 550;
 }
 
 .buttons {
@@ -71,5 +79,4 @@ svg {
     grid-template-columns: auto 1fr;
     grid-auto-rows: auto;
     align-items: center;
-    margin: 2px;
 }
