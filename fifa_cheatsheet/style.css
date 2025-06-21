@@ -1,5 +1,5 @@
 body {
-    background-color: black;
+    margin: 0px;
     padding: 0;
     display: flex;
     flex-direction: column;
@@ -9,18 +9,16 @@ body {
 }
 
 div {
-    margin: 8px;
+    margin: 5px;
     background-color: rgba(200, 200, 255, 0.3);
     min-width: 100px;
     min-height: 10px;
-    border: 2px solid rgba(255, 0, 0, 0.5);
-    padding: 1px;
+    /* border: 2px solid rgba(255, 0, 0, 0.5); */
     flex-grow: 0;
 }
 
 svg {
-    margin: 8px;
-    padding: 2px;
+    margin: 5px;
 }
 
 .base_category {
@@ -44,6 +42,10 @@ svg {
     flex-direction: column;
 }
 
+.category_title {
+    text-align: center;
+}
+
 .category_content {
     display: flex;
     flex-direction: row;
@@ -55,6 +57,7 @@ svg {
     display: grid;
     grid-template-columns: auto 1fr;
     grid-auto-rows: auto;
+    align-items: center;
     margin: 2px;
 }
 
