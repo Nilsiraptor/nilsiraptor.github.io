@@ -9,8 +9,6 @@ body {
 }
 
 div {
-    margin: 5px;
-    background-color: rgba(200, 200, 255, 0.3);
     min-width: 100px;
     min-height: 10px;
     /* border: 2px solid rgba(255, 0, 0, 0.5); */
@@ -19,6 +17,21 @@ div {
 
 svg {
     margin: 5px;
+}
+
+.container {
+    margin: 5px;
+    background-color: rgba(200, 200, 255, 0.3);
+}
+
+.title {
+    grid-column-start: span 2;
+    text-align: center;
+}
+
+.buttons {
+    vertical-align: middle;
+    background-color: none;
 }
 
 .base_category {
@@ -59,14 +72,4 @@ svg {
     grid-auto-rows: auto;
     align-items: center;
     margin: 2px;
-}
-
-.title {
-    grid-column-start: span 2;
-    text-align: center;
-}
-
-.buttons {
-    vertical-align: middle;
-    background-color: none;
 }
