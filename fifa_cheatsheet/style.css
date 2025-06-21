@@ -5,20 +5,20 @@ body {
     flex-direction: column;
     font-family: "Lexend", sans-serif;
     color: #131313;
-    background-color: darkblue;
+    background-color: darkslateblue;
 }
 
 div {
-    margin: 1px;
-    background-color: rgba(200, 200, 255, 0.4);
+    margin: 8px;
+    background-color: rgba(200, 200, 255, 0.3);
     min-width: 100px;
     min-height: 10px;
-    border: 1px solid red;
+    border: 2px solid rgba(255, 0, 0, 0.5);
     padding: 1px;
 }
 
 svg {
-    margin: 2px;
+    margin: 8px;
     padding: 2px;
 }
 
@@ -28,10 +28,28 @@ svg {
     flex-direction: column;
 }
 
+.base_title {
+    text-align: center;
+}
+
+.base_content {
+    display: flex;
+    flex-grow: 0;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
 .category {
     display: flex;
     flex-grow: 0;
     flex-direction: column;
+}
+
+.category_content {
+    display: flex;
+    flex-grow: 0;
+    flex-direction: row;
+    flex-wrap: wrap;
 }
 
 .sub_category {
@@ -39,13 +57,16 @@ svg {
     flex-grow: 0;
     grid-template-columns: auto 1fr;
     grid-auto-rows: auto;
+    margin: 2px;
 }
 
 .title {
+    flex-grow: 0;
     grid-column-start: span 2;
     text-align: center;
 }
 
-.item {
+.buttons {
     vertical-align: middle;
+    background-color: none;
 }
