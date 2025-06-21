@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg">
+    <style>
+        circle, rect {
+            fill: #131313;
+        }
+    </style>
+    <symbol id="a" viewBox="0 0 20 20">
+        <circle class="button" cx="50%" cy="50%" r="10" />
+        <text x="50%" y="50%" font-family="Arial, sans-serif"
+        font-size="17" font-weight="bold" fill="#afea32" text-anchor="middle"
+        alignment-baseline="central">A</text>
+    </symbol>
+    <symbol id="b" viewBox="0 0 20 20">
+        <circle class="button" cx="50%" cy="50%" r="10" />
+        <text x="50%" y="50%" font-family="Arial, sans-serif"
+        font-size="17" font-weight="bold" fill="#fc3f23" text-anchor="middle"
+        alignment-baseline="central">B</text>
+    </symbol>
+    <symbol id="x" viewBox="0 0 20 20">
+        <circle class="button" cx="50%" cy="50%" r="10" />
+        <text x="50%" y="50%" font-family="Arial, sans-serif"
+        font-size="17" font-weight="bold" fill="#00b5da" text-anchor="middle"
+        alignment-baseline="central">X</text>
+    </symbol>
+    <symbol id="y" viewBox="0 0 20 20">
+        <circle class="button" cx="50%" cy="50%" r="10" />
+        <text x="50%" y="50%" font-family="Arial, sans-serif"
+        font-size="17" font-weight="bold" fill="#feeb00" text-anchor="middle"
+        alignment-baseline="central">Y</text>
+    </symbol>
+    <symbol id="l" viewBox="0 0 20 20">
+        <circle class="button" cx="50%" cy="50%" r="10" />
+        <text x="50%" y="50%" font-family="Arial, sans-serif"
+        font-size="17" font-weight="bold" fill="white" text-anchor="middle"
+        alignment-baseline="central">L</text>
+    </symbol>
+    <symbol id="r" viewBox="0 0 20 20">
+        <circle class="button" cx="50%" cy="50%" r="10" />
+        <text x="50%" y="50%" font-family="Arial, sans-serif"
+        font-size="17" font-weight="bold" fill="white" text-anchor="middle"
+        alignment-baseline="central">R</text>
+    </symbol>
+    <symbol id="rt" viewbox="0 0 30 20">
+        <rect x="0" y="0" width="30" height="20" rx="3" ry="3" />
+        <text x="50%" y="50%" font-family="Arial, sans-serif"
+        font-size="17" font-weight="bold" fill="white" text-anchor="middle"
+        alignment-baseline="central">RT</text>
+    </symbol>
+    <symbol id="lt" viewbox="0 0 30 20">
+        <rect x="0" y="0" width="30" height="20" rx="3" ry="3" />
+        <text x="50%" y="50%" font-family="Arial, sans-serif"
+        font-size="17" font-weight="bold" fill="white" text-anchor="middle"
+        alignment-baseline="central">LT</text>
+    </symbol>
+    <symbol id="rb" viewbox="0 0 30 20">
+        <rect x="0" y="0" width="30" height="20" rx="5" ry="10" />
+        <text x="50%" y="50%" font-family="Arial, sans-serif"
+        font-size="17" font-weight="bold" fill="white" text-anchor="middle"
+        alignment-baseline="central">RB</text>
+    </symbol>
+    <symbol id="lb" viewbox="0 0 30 20">
+        <rect x="0" y="0" width="30" height="20" rx="5" ry="10" />
+        <text x="50%" y="50%" font-family="Arial, sans-serif"
+        font-size="17" font-weight="bold" fill="white" text-anchor="middle"
+        alignment-baseline="central">LB</text>
+    </symbol>
+</svg>
