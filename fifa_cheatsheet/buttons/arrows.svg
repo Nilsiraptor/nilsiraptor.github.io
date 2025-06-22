@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg">
+    <style>
+        path {
+            stroke: none;
+            fill: #696969;
+        }
+    </style>
+    <symbol id="right">
+        <path d="M 0,8 H 14 V 4 L 20,10 L 14,16 V 12 H 0 z"/>
+    </symbol>
+    <symbol id="up">
+            <use href="#right" transform="rotate(-90 10 10)"/>
+    </symbol>
+    <symbol id="down">
+            <use href="#right" transform="rotate(-90 10 10)"/>
+    </symbol>
+</svg>
