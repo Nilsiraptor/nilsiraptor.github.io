@@ -1,0 +1,101 @@
+body {
+    font-family: "Lexend", sans-serif;
+
+    justify-items: center;
+
+    margin: 0;
+    padding: 0;
+
+    background-color: whitesmoke;
+}
+
+#body {
+    margin: 0;
+    padding: 0;
+    justify-items: center;
+
+    max-width: max(100vh, 600px);
+    width: 100%;
+}
+
+/* tr {
+    color: inherit;
+    text-decoration: inherit;
+
+    flex-grow: 1;
+
+    margin: 10px;
+    padding: 10px;
+    border-radius: 10px;
+
+    min-height: 50px;
+    min-width: 75px;
+    max-width: min(34vh, 34vw);
+
+    align-content: center;
+    text-align: center;
+} */
+
+table {
+    border-spacing: 5px;
+    font-size: large;
+}
+
+th {
+    --border-radius: 100px;
+}
+
+th:nth-child(odd) {
+    padding: 5px;
+    padding-left: 20px;
+    text-align: right;
+    border-top-left-radius: var(--border-radius);
+    border-bottom-left-radius: var(--border-radius);
+    font-size: 110%;
+}
+
+thead th:nth-child(even) {
+    font-size: 110%;
+}
+
+th:nth-child(even) {
+    padding: 5px;
+    padding-right: 20px;
+    text-align: left;
+    border-top-right-radius: var(--border-radius);
+    border-bottom-right-radius: var(--border-radius);
+}
+
+tbody th:nth-child(even) {
+    font-family: "Martian Mono", monospace
+}
+
+table thead tr th {
+    background-color: darkgray;
+    font-weight: medium;
+    text-align: center !important;
+}
+
+table tbody tr th {
+    font-weight: normal;
+}
+
+tbody tr:nth-child(5n + 1) {
+    background-color: lightcoral;
+}
+
+tbody tr:nth-child(5n + 2) {
+    background-color: lightsalmon;
+}
+
+tbody tr:nth-child(5n + 3) {
+    background-color: lightgreen;
+}
+
+tbody tr:nth-child(5n + 4) {
+    background-color: lightskyblue;
+}
+
+tbody tr:nth-child(5n + 5) {
+    background-color: plum;
+}
