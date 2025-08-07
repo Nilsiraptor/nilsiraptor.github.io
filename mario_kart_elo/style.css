@@ -43,37 +43,39 @@ table {
 
 th {
     --border-radius: 100px;
+    --padding-edge: 20px;
+    padding: 5px;
+
+    --font-size: 110%;
 }
 
 th:nth-child(odd) {
-    padding: 5px;
-    padding-left: 20px;
-    text-align: right;
+    padding-left: var(--padding-edge);
     border-top-left-radius: var(--border-radius);
     border-bottom-left-radius: var(--border-radius);
-    font-size: 110%;
 }
 
-thead th:nth-child(even) {
-    font-size: 110%;
+tbody th:nth-child(odd) {
+    font-size: var(--font-size);
+    text-align: right;
 }
 
 th:nth-child(even) {
-    padding: 5px;
-    padding-right: 20px;
-    text-align: left;
+    padding-right: var(--padding-edge);
     border-top-right-radius: var(--border-radius);
     border-bottom-right-radius: var(--border-radius);
 }
 
 tbody th:nth-child(even) {
+    text-align: left;
     font-family: "Martian Mono", monospace
 }
 
 table thead tr th {
     background-color: silver;
-    font-weight: medium;
-    text-align: center !important;
+    font-weight: 600;
+    text-align: center;
+    font-size: var(--font-size);
 }
 
 table tbody tr th {
