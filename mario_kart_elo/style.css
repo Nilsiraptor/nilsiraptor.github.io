@@ -99,3 +99,7 @@ tbody tr:nth-child(5n + 4) {
 tbody tr:nth-child(5n + 5) {
     background-color: plum;
 }
+
+p {
+    font-size: smaller;
+}
