@@ -1,13 +1,17 @@
 @font-face {
     font-family: 'Lexend';
-    src: url('../Lexend.ttf') format('truetype');
+    src:
+        local("Lexend"),
+        url('../Lexend.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'Martian Mono';
-    src: url('../MartianMono.ttf') format('truetype');
+    src:
+        local("Martian Mono"),
+        url('../MartianMono.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
 }
