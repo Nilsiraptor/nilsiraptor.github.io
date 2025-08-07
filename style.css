@@ -1,8 +1,8 @@
 @font-face {
-    font-family: 'Lexend';
+    font-family: "Lexend";
     src:
         local("Lexend"),
-        url('Lexend.ttf') format('truetype');
+        url("Lexend.ttf") format("truetype");
     font-weight: normal;
     font-style: normal;
 }
