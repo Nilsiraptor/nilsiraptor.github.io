@@ -36,24 +36,6 @@ body {
     width: 100%;
 }
 
-/* tr {
-    color: inherit;
-    text-decoration: inherit;
-
-    flex-grow: 1;
-
-    margin: 10px;
-    padding: 10px;
-    border-radius: 10px;
-
-    min-height: 50px;
-    min-width: 75px;
-    max-width: min(34vh, 34vw);
-
-    align-content: center;
-    text-align: center;
-} */
-
 table {
     border-spacing: 5px;
     font-size: large;
@@ -89,7 +71,7 @@ tbody th:nth-child(even) {
 }
 
 table thead tr th {
-    background-color: darkgray;
+    background-color: silver;
     font-weight: medium;
     text-align: center !important;
 }
