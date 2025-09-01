@@ -49,14 +49,22 @@ a {
     text-align: center;
 }
 
-a:nth-child(3n + 1) {
+a:nth-child(5n + 1) {
     background-color: lightcoral;
 }
 
-a:nth-child(3n + 2) {
+a:nth-child(5n + 2) {
+    background-color: lightsalmon;
+}
+
+a:nth-child(5n + 3) {
+    background-color: lightgreen;
+}
+
+a:nth-child(5n + 4) {
     background-color: lightskyblue;
 }
 
-a:nth-child(3n + 3) {
-    background-color: lightgreen;
+a:nth-child(5n + 5) {
+    background-color: plum;
 }
