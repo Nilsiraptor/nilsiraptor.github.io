@@ -1,0 +1,87 @@
+@font-face {
+    font-family: "Lexend";
+    src:
+        local("Lexend"),
+        url("../Lexend.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: "Chiron";
+    src:
+        local("Chiron GoRound TC Medium"),
+        url("Chiron.ttf") format("truetype");
+    font-weight: 500;
+    font-style: normal;
+}
+
+
+body {
+    font-family: "Lexend", "Chiron", sans-serif;
+
+    justify-items: center;
+
+    margin: 0;
+    padding: 0;
+
+    background-color: whitesmoke;
+}
+
+#body {
+    margin: 0;
+    padding: 0;
+    justify-items: center;
+
+    max-width: max(100vh, 600px);
+    width: 100%;
+
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+div.tile {
+    display: flex;
+    flex-direction: column;
+
+    max-width: 45%;
+
+    padding: 10px;
+    margin: 5px;
+    border-radius: 10px;
+    border: 3px solid;
+}
+
+h2 {
+    margin: 0;
+    padding: 0;
+}
+
+p {
+    font-size: large;
+    text-align: justify;
+}
+
+img {
+    border-radius: 4px;
+}
+
+div.tile:nth-child(5n + 1) {
+    border-color: lightcoral;
+}
+
+div.tile:nth-child(5n + 2) {
+    border-color: lightsalmon;
+}
+
+div.tile:nth-child(5n + 3) {
+    border-color: lightgreen;
+}
+
+div.tile:nth-child(5n + 4) {
+    border-color: lightskyblue;
+}
+
+div.tile:nth-child(5n + 5) {
+    border-color: plum;
+}
