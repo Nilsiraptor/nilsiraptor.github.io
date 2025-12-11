@@ -105,3 +105,20 @@ tbody tr:nth-child(5n + 5) {
 p {
     font-size: smaller;
 }
+
+div.description {
+    max-width: 80ch;
+    text-align: justify;
+    hyphens: auto;
+    padding: 5px;
+}
+
+summary {
+    padding: 5px;
+    width: fit-content;
+}
+
+summary:hover {
+    background-color: lightgrey;
+    border-radius: 5px;
+}
