@@ -7,7 +7,7 @@
     "background_color": "#f5f5f5",
     "description": "Häkel-Tracker zum tracken der aktuellen Maschen und Farben",
     "id": "haekeln",
-    "scope": "/haekeln/",
+    "scope": "/haekeln",
     "icons": [
     {
         "src": "icon-192.png",
