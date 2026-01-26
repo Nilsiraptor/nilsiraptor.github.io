@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="de">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width">
+        <title>Häkel-Tracker</title>
+        <link rel="stylesheet" href="style.css"/>
+        <link rel="icon" href="icon-192.png"/>
+        <link rel="manifest" href="./manifest.json">
+    </head>
+    <body>
+        <div id="setup-screen">
+            <h2>Tabelle einfügen</h2>
+            <div class="hint-text">
+                Markiere deine Tabelle, kopiere sie (Strg+C) und füge sie hier ein (Strg+V).<br>
+                Hintergrund- und Schriftfarben werden übernommen.
+            </div>
+
+            <div id="paste-area" contenteditable="true">
+                Hier klicken & Strg+V
+            </div>
+
+            <p id="status-msg" style="color:#d63031; display:none; margin-top:10px;">Fehler beim Lesen der Tabelle.</p>
+        </div>
+
+        <header>
+            <span>Häkel-Tracker</span>
+            <button id="reset-btn" onclick="resetApp()">Neu laden</button>
+        </header>
+
+        <div id="container"></div>
+        <div id="progress">Bereit</div>
+        <div id="click-overlay">
+            <div class="zone" id="zone-left" title="Zurück"></div>
+            <div class="zone" id="zone-right" title="Weiter"></div>
+        </div>
+
+        <script>
+            let pattern = [];
+            let currentIndex = 0;
+
+            const container = document.getElementById('container');
+            const progressDisplay = document.getElementById('progress');
+            const setupScreen = document.getElementById('setup-screen');
+            const pasteArea = document.getElementById('paste-area');
+            const statusMsg = document.getElementById('status-msg');
+
+            pasteArea.addEventListener('paste', (e) => {
+                setTimeout(() => { parsePastedContent(); }, 100);
+            });
+
+            function parsePastedContent() {
+                const table = pasteArea.querySelector('table');
+
+                if (!table) {
+                    statusMsg.style.display = 'block';
+                    statusMsg.innerText = "Keine Tabelle erkannt. Bitte markiere Zellen in Excel/Sheets.";
+                    return;
+                }
+
+                const rows = table.querySelectorAll('tr');
+                const result = [];
+
+                rows.forEach((row) => {
+                    const cells = row.querySelectorAll('td, th');
+                    if (cells.length < 2) return;
+
+                    let roundNum = cells[0].innerText.trim();
+
+                    for (let i = 1; i < cells.length; i++) {
+                        const cell = cells[i];
+                        const text = cell.innerText.trim();
+
+                        if (!text) continue;
+
+                        // 1. Hintergrundfarbe holen
+                        let bgColor = cell.style.backgroundColor;
+                        if (bgColor === 'transparent' || bgColor === 'rgba(0, 0, 0, 0)') {
+                            bgColor = null;
+                        }
+
+                        // 2. Schriftfarbe holen
+                        let txtColor = cell.style.color;
+                        // Manchmal ist keine Schriftfarbe gesetzt (dann ist es browser-default schwarz)
+                        if (!txtColor) txtColor = null;
+
+                        const countMatch = text.match(/(\d+)/);
+                        if (countMatch) {
+                            result.push({
+                                type: `Runde ${roundNum}`,
+                                text: countMatch[0],
+                                color: bgColor,
+                                textColor: txtColor // Speichern der Textfarbe
+                            });
+                        }
+                    }
+                });
+
+                if (result.length > 0) {
+                    pattern = result;
+
+                    localStorage.setItem('haekel_pattern', JSON.stringify(pattern))
+
+                    setupScreen.classList.add('hidden');
+                    initUI();
+                } else {
+                    statusMsg.style.display = 'block';
+                    statusMsg.innerText = "Keine Daten gefunden.";
+                }
+            }
+
+            function initUI() {
+                container.innerHTML = "";
+                pattern.forEach((step, index) => {
+                    const el = document.createElement('div');
+                    el.className = 'step';
+                    el.id = `step-${index}`;
+
+                    // Wir speichern die Farben im Dataset für späteren Zugriff
+                    // if (step.color) el.dataset.color = step.color;
+                    // if (step.textColor) el.dataset.textColor = step.textColor;
+
+                    // --- NEU: Style direkt berechnen ---
+                    let badgeColor = '';
+                    if (step.color) el.style.backgroundColor = step.color;
+                    if (step.textColor) badgeColor += `color: ${step.textColor}; `;
+
+                    // --- Logik für Farben ---
+                    // 1. Test: Ist die Schrift vorhanden und zu hell?
+                    if (step.textColor && isColorLight(step.textColor)) {
+                        // Wenn ja: Erzwinge schwarzen Hintergrund
+                        badgeColor += 'background-color: #333';
+                    }
+
+                    el.innerHTML = `
+                        <div class="step-type">${step.type}</div>
+                        <div class="step-count-badge" style="${badgeColor}">${step.text}</div>
+                        `;
+                    container.appendChild(el);
+                });
+                updateUI();
+            }
+
+            function updateUI() {
+                // Reset old
+                document.querySelectorAll('.step').forEach(el => {
+                    el.classList.remove('active');
+                    // el.style.borderColor = 'transparent';
+                    // const badge = el.querySelector('.step-count-badge');
+                    // if(badge) {
+                    //     badge.style.backgroundColor = '#eee';
+                    //     badge.style.color = '#333';
+                    // }
+                });
+
+                // Activate new
+                const activeEl = document.getElementById(`step-${currentIndex}`);
+                if (activeEl) {
+                    activeEl.classList.add('active');
+
+                    // const bgColor = activeEl.dataset.color;
+                    // const txtColor = activeEl.dataset.textColor;
+
+                    // // Randfarbe setzen (Nimmt Hintergrundfarbe, fallback grau)
+                    // if (bgColor) {
+                    //     activeEl.style.backgroundColor = bgColor;
+                    // } else {
+                    //     activeEl.style.backgroundColor = '#ccc';
+                    // }
+
+                    // // Badge einfärben
+                    // const badge = activeEl.querySelector('.step-count-badge');
+                    // if(badge) {
+                    //     // Hintergrund anwenden
+                    //     // if (bgColor) badge.style.backgroundColor = bgColor;
+
+                    //     // Textfarbe anwenden
+                    //     if (txtColor) {
+                    //         badge.style.color = txtColor;
+                    //     } else {
+                    //         // Fallback, falls keine Textfarbe in der Tabelle war (meist Schwarz)
+                    //         badge.style.color = '#000000';
+                    //     }
+                    // }
+                    activeEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+                progressDisplay.innerText = `${currentIndex + 1} / ${pattern.length}`;
+
+                localStorage.setItem('haekel_index', currentIndex)
+            }
+
+            function resetApp() {
+                if(confirm("Tabelle neu einfügen?")) {
+                    localStorage.removeItem('haekel_pattern');
+                    localStorage.removeItem('haekel_index');
+
+                    location.reload();
+                }
+            }
+
+            function next() { if (currentIndex < pattern.length - 1) { currentIndex++; updateUI(); } }
+            function prev() { if (currentIndex > 0) { currentIndex--; updateUI(); } }
+
+            document.getElementById('zone-left').addEventListener('click', (e) => { e.preventDefault(); prev(); });
+            document.getElementById('zone-right').addEventListener('click', (e) => { e.preventDefault(); next(); });
+            document.addEventListener('keydown', (e) => {
+                if (e.key === "ArrowRight" || e.key === " ") next();
+                if (e.key === "ArrowLeft") prev();
+            });
+
+            // Hilfsfunktion: Prüft, ob eine Farbe hell ist
+            function isColorLight(colorStr) {
+                if (!colorStr) return false;
+
+                // Trick: Wir lassen den Browser die Farbe (z.B. "red" oder "#fff") in RGB-Zahlen umwandeln
+                let div = document.createElement("div");
+                div.style.color = colorStr;
+                document.body.appendChild(div);
+                let rgbStr = window.getComputedStyle(div).color;
+                document.body.removeChild(div);
+
+                // Zahlen auslesen (r, g, b)
+                let rgb = rgbStr.match(/\d+/g);
+                if (!rgb) return false;
+
+                // Helligkeits-Formel (Standard)
+                // 0 = Schwarz, 255 = Weiß. Alles über 130 empfinden wir als "hell".
+                let brightness = (parseInt(rgb[0]) * 2126 + parseInt(rgb[1]) * 7152 + parseInt(rgb[2]) * 722) / 10000;
+
+                return brightness > 255 * 0.9;
+            }
+
+            // --- NEU: Beim Start prüfen, ob Daten da sind ---
+            const savedPattern = localStorage.getItem('haekel_pattern');
+            const savedIndex = localStorage.getItem('haekel_index');
+
+            if (savedPattern) {
+                // Alte Daten gefunden! Laden:
+                pattern = JSON.parse(savedPattern);
+                if (savedIndex) {
+                    currentIndex = parseInt(savedIndex);
+                }
+
+                // Setup ausblenden und starten
+                setupScreen.classList.add('hidden');
+                initUI();
+
+                // Wichtig: UI muss einmal aufgerufen werden, um zur richtigen Karte zu scrollen
+                // Wir machen das mit einer kleinen Verzögerung, damit der Browser bereit ist
+                setTimeout(() => {
+                    updateUI();
+                }, 50);
+            }
+
+            // --- PWA Service Worker registrieren ---
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('./service-worker.js')
+                    .then(() => console.log('Service Worker läuft'))
+                    .catch((err) => console.log('Service Worker Fehler', err));
+            }
+        </script>
+    </body>
+</html>
