@@ -7,7 +7,7 @@
     "background_color": "#14181C",
     "description": "Social film discovery.",
     "id": "letterboxd",
-    "scope": "https://letterboxd.com",
+    "scope": "/letterboxd/",
     "icons": [{
       "src": "https://s.ltrbxd.com/static/img/touch-icon-48x48-8UhExKgZ.png",
       "sizes": "48x48",
