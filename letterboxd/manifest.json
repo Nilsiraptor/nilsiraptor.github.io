@@ -1,13 +1,13 @@
 {
     "name": "Letterboxd",
     "short_name": "Letterboxd",
-    "start_url": "/letterboxd",
+    "start_url": "https://letterboxd.com",
     "display": "standalone",
     "theme_color": "#445566",
     "background_color": "#14181C",
     "description": "Social film discovery.",
     "id": "letterboxd",
-    "scope": "https://letterboxd.com/",
+    "scope": "https://letterboxd.com",
     "icons": [{
       "src": "https://s.ltrbxd.com/static/img/touch-icon-48x48-8UhExKgZ.png",
       "sizes": "48x48",
