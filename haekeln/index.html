@@ -13,7 +13,8 @@
             <h2>Tabelle einfügen</h2>
             <div class="hint-text">
                 Markiere deine Tabelle, kopiere sie (Strg+C) und füge sie hier ein (Strg+V).<br>
-                Hintergrund- und Schriftfarben werden übernommen.
+                Hintergrund- und Schriftfarben werden übernommen. <br>
+                <a href="https://docs.google.com/spreadsheets/d/181FcqtFeMyUpZpjV2n70oipbXTLq5x_gFjtrhSkZ43Y/edit?usp=sharing">Beispiel Tabelle</a>
             </div>
 
             <div id="paste-area" contenteditable="true">
@@ -116,10 +117,6 @@
                     el.className = 'step';
                     el.id = `step-${index}`;
 
-                    // Wir speichern die Farben im Dataset für späteren Zugriff
-                    // if (step.color) el.dataset.color = step.color;
-                    // if (step.textColor) el.dataset.textColor = step.textColor;
-
                     // --- NEU: Style direkt berechnen ---
                     let badgeColor = '';
                     if (step.color) el.style.backgroundColor = step.color;
@@ -145,12 +142,6 @@
                 // Reset old
                 document.querySelectorAll('.step').forEach(el => {
                     el.classList.remove('active');
-                    // el.style.borderColor = 'transparent';
-                    // const badge = el.querySelector('.step-count-badge');
-                    // if(badge) {
-                    //     badge.style.backgroundColor = '#eee';
-                    //     badge.style.color = '#333';
-                    // }
                 });
 
                 // Activate new
@@ -158,30 +149,6 @@
                 if (activeEl) {
                     activeEl.classList.add('active');
 
-                    // const bgColor = activeEl.dataset.color;
-                    // const txtColor = activeEl.dataset.textColor;
-
-                    // // Randfarbe setzen (Nimmt Hintergrundfarbe, fallback grau)
-                    // if (bgColor) {
-                    //     activeEl.style.backgroundColor = bgColor;
-                    // } else {
-                    //     activeEl.style.backgroundColor = '#ccc';
-                    // }
-
-                    // // Badge einfärben
-                    // const badge = activeEl.querySelector('.step-count-badge');
-                    // if(badge) {
-                    //     // Hintergrund anwenden
-                    //     // if (bgColor) badge.style.backgroundColor = bgColor;
-
-                    //     // Textfarbe anwenden
-                    //     if (txtColor) {
-                    //         badge.style.color = txtColor;
-                    //     } else {
-                    //         // Fallback, falls keine Textfarbe in der Tabelle war (meist Schwarz)
-                    //         badge.style.color = '#000000';
-                    //     }
-                    // }
                     activeEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 }
                 progressDisplay.innerText = `${currentIndex + 1} / ${pattern.length}`;
@@ -253,11 +220,11 @@
             }
 
             // --- PWA Service Worker registrieren ---
-            if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('./service-worker.js')
-                    .then(() => console.log('Service Worker läuft'))
-                    .catch((err) => console.log('Service Worker Fehler', err));
-            }
+            // if ('serviceWorker' in navigator) {
+            //     navigator.serviceWorker.register('./service-worker.js')
+            //         .then(() => console.log('Service Worker läuft'))
+            //         .catch((err) => console.log('Service Worker Fehler', err));
+            // }
         </script>
     </body>
 </html>
