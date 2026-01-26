@@ -1,7 +1,7 @@
 {
     "name": "Letterboxd",
     "short_name": "Letterboxd",
-    "start_url": "https://letterboxd.com",
+    "start_url": "/letterboxd",
     "display": "standalone",
     "theme_color": "#445566",
     "background_color": "#14181C",
