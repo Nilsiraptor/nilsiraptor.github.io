@@ -1,6 +1,5 @@
-const CACHE_NAME = "haekel-tracker-v5";
+const CACHE_NAME = "haekel-tracker-v6";
 const ASSETS = [
-  "./",
   "./index.html",
   "./style.css",
   "./manifest.json",
