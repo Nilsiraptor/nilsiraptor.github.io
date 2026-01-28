@@ -4,155 +4,278 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#000000">
-    <title>Equalized Cam</title>
+    <title>Pro B&W Cam</title>
     <link rel="manifest" href="manifest.json">
     <style>
-        body, html { margin: 0; padding: 0; background: #000; height: 100%; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        body, html { margin: 0; padding: 0; background: #000; height: 100%; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: sans-serif; }
 
-        /* The canvas displays the processed video */
+        /* Preview Canvas - Scaled to fit screen */
         canvas {
             width: 100%;
-            height: auto;
-            max-height: 85vh;
-            object-fit: contain;
+            height: 100%;
+            object-fit: cover;
         }
 
-        /* The raw video is hidden, we only read data from it */
         video { display: none; }
 
-        /* Capture Button Styling */
-        #capture-btn {
+        .controls {
             position: absolute;
-            bottom: 30px;
+            bottom: 40px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+            z-index: 10;
+        }
+
+        #capture-btn {
             width: 70px;
             height: 70px;
             border-radius: 50%;
-            background-color: white;
-            border: 4px solid #ccc;
+            background-color: transparent;
+            border: 4px solid white;
             outline: none;
             cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            position: relative;
             transition: transform 0.1s;
         }
-        #capture-btn:active { transform: scale(0.9); background-color: #eee; }
+        #capture-btn::after {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 58px; height: 58px;
+            background: white;
+            border-radius: 50%;
+        }
+        #capture-btn:active { transform: scale(0.95); }
+
+        #switch-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background-color: rgba(50,50,50,0.5);
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(4px);
+        }
+
+        /* Processing Indicator Overlay */
+        #loader {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7);
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            z-index: 20;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+        .spinner {
+            width: 40px; height: 40px;
+            border: 4px solid rgba(255,255,255,0.3);
+            border-top: 4px solid #fff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 15px;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
     </style>
 </head>
 <body>
 
     <video id="video" autoplay playsinline></video>
+    <canvas id="preview-canvas"></canvas>
 
-    <canvas id="canvas"></canvas>
+    <div id="loader">
+        <div class="spinner"></div>
+        <div>PROCESSING HI-RES</div>
+    </div>
 
-    <button id="capture-btn"></button>
+    <div class="controls">
+        <button id="switch-btn">↻</button>
+        <button id="capture-btn"></button>
+    </div>
 
     <script>
         const video = document.getElementById('video');
-        const canvas = document.getElementById('canvas');
-        const ctx = canvas.getContext('2d', { willReadFrequently: true });
-        const btn = document.getElementById('capture-btn');
+        const previewCanvas = document.getElementById('preview-canvas');
+        const previewCtx = previewCanvas.getContext('2d', { willReadFrequently: true });
 
-        // 1. Setup Camera
-        async function setupCamera() {
+        const loader = document.getElementById('loader');
+        const captureBtn = document.getElementById('capture-btn');
+        const switchBtn = document.getElementById('switch-btn');
+
+        let videoDevices = [];
+        let currentDeviceIndex = 0;
+        let isProcessingPreview = false;
+
+        // --- 1. Camera Setup ---
+        async function getCameras() {
             try {
-                const stream = await navigator.mediaDevices.getUserMedia({
-                    video: { facingMode: 'environment' } // Prefer back camera
-                });
-                video.srcObject = stream;
-                video.onloadedmetadata = () => {
-                    canvas.width = video.videoWidth;
-                    canvas.height = video.videoHeight;
-                    requestAnimationFrame(processFrame);
-                };
-            } catch (err) {
-                console.error("Camera access denied:", err);
-                alert("Camera access is required for this app.");
-            }
+                await navigator.mediaDevices.getUserMedia({ video: true });
+                const devices = await navigator.mediaDevices.enumerateDevices();
+                videoDevices = devices.filter(device => device.kind === 'videoinput');
+
+                // Find back camera
+                const backIdx = videoDevices.findIndex(d => d.label.toLowerCase().includes('back') || d.label.toLowerCase().includes('environment'));
+                if (backIdx !== -1) currentDeviceIndex = backIdx;
+
+                startCamera();
+            } catch (err) { console.error(err); }
         }
 
-        // 2. Image Processing Loop
-        function processFrame() {
-            if (video.paused || video.ended) return;
+        async function startCamera() {
+            const deviceId = videoDevices[currentDeviceIndex] ? videoDevices[currentDeviceIndex].deviceId : undefined;
 
-            // Draw current video frame to canvas
-            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            // Request Native Resolution (4K) from hardware
+            const constraints = {
+                video: {
+                    deviceId: deviceId ? { exact: deviceId } : undefined,
+                    width: { ideal: 4096 },
+                    height: { ideal: 2160 }
+                }
+            };
 
-            // Get raw pixel data
-            const frame = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia(constraints);
+                video.srcObject = stream;
+
+                video.onloadedmetadata = () => {
+                    // Set Preview Canvas to a reasonable size for performance (e.g., screen size)
+                    // We DO NOT match video.videoWidth here, that would kill performance.
+                    previewCanvas.width = window.innerWidth * window.devicePixelRatio;
+                    previewCanvas.height = window.innerHeight * window.devicePixelRatio;
+
+                    if (!isProcessingPreview) {
+                        isProcessingPreview = true;
+                        requestAnimationFrame(loopPreview);
+                    }
+                };
+            } catch (err) { alert("Camera Error"); }
+        }
+
+        switchBtn.addEventListener('click', () => {
+            if (videoDevices.length > 1) {
+                currentDeviceIndex = (currentDeviceIndex + 1) % videoDevices.length;
+                startCamera();
+            }
+        });
+
+        // --- 2. The Core Algorithm (Reusable) ---
+        function applyEqualization(ctx, width, height) {
+            const frame = ctx.getImageData(0, 0, width, height);
             const data = frame.data;
             const len = data.length;
 
-            // --- Step A: Convert to Grayscale & Build Histogram ---
-            const histogram = new Array(256).fill(0);
-
-            // We iterate by 4 because pixel data is [R, G, B, A, R, G, B, A...]
+            // 1. Grayscale & Histogram
+            const histogram = new Uint32Array(256); // Typed array is faster
             for (let i = 0; i < len; i += 4) {
-                // Luminance formula
-                const r = data[i];
-                const g = data[i + 1];
-                const b = data[i + 2];
-                const gray = 0.299 * r + 0.587 * g + 0.114 * b;
-
-                // Store grayscale temporarily in the red channel to save memory/loops
-                data[i] = gray;
-
-                // Increment histogram bucket
-                histogram[Math.floor(gray)]++;
+                // Luminance (Rec. 601)
+                const gray = (0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i + 2]) | 0; // | 0 floors it
+                data[i] = gray; // Store temporarily
+                histogram[gray]++;
             }
 
-            // --- Step B: Calculate CDF (Cumulative Distribution Function) ---
-            const cdf = new Array(256).fill(0);
+            // 2. CDF
+            const cdf = new Uint32Array(256);
             let sum = 0;
-            const totalPixels = len / 4;
-
-            // Filter out 0 values to find min CDF (for better normalization)
             let minCdf = 0;
+            // Find minCdf (first non-zero value)
             for (let i = 0; i < 256; i++) {
                 sum += histogram[i];
                 cdf[i] = sum;
                 if (minCdf === 0 && sum > 0) minCdf = sum;
             }
 
-            // --- Step C: Apply Equalization ---
-            // Pre-calculate the mapping for all 256 levels to avoid division inside the pixel loop
-            const map = new Array(256);
+            // 3. Mapping
+            const map = new Uint8Array(256);
+            const totalPixels = len / 4;
             const range = totalPixels - minCdf;
+            const factor = 255 / range;
 
             for(let i = 0; i < 256; i++) {
-                map[i] = Math.round(((cdf[i] - minCdf) / range) * 255);
+                 map[i] = Math.round((cdf[i] - minCdf) * factor);
             }
 
-            // Apply the mapping to the pixel data
+            // 4. Apply
             for (let i = 0; i < len; i += 4) {
-                // Retrieve the grayscale value we stored in data[i]
-                const originalGray = Math.floor(data[i]);
-                const newGray = map[originalGray];
-
-                data[i]     = newGray; // R
-                data[i + 1] = newGray; // G
-                data[i + 2] = newGray; // B
-                // data[i+3] is Alpha, leave it alone
+                const val = map[data[i]]; // Retrieve stored gray and map it
+                data[i] = val;
+                data[i + 1] = val;
+                data[i + 2] = val;
             }
 
-            // Put processed data back
             ctx.putImageData(frame, 0, 0);
-
-            requestAnimationFrame(processFrame);
         }
 
-        // 3. Capture Functionality
-        btn.addEventListener('click', () => {
-            const link = document.createElement('a');
-            link.download = `bw_eq_${Date.now()}.png`;
-            link.href = canvas.toDataURL();
-            link.click();
+        // --- 3. Fast Low-Res Preview Loop ---
+        function loopPreview() {
+            if (video.paused || video.ended) return;
+
+            // Draw video scaled down to canvas size
+            previewCtx.drawImage(video, 0, 0, previewCanvas.width, previewCanvas.height);
+
+            // Apply effect to the low-res preview canvas
+            applyEqualization(previewCtx, previewCanvas.width, previewCanvas.height);
+
+            requestAnimationFrame(loopPreview);
+        }
+
+        // --- 4. High-Res Capture ---
+        captureBtn.addEventListener('click', async () => {
+            // Show loader
+            loader.style.display = 'flex';
+
+            // Allow UI to update before blocking CPU with image processing
+            setTimeout(() => {
+                try {
+                    // Create an off-screen canvas at FULL Native Resolution
+                    const fullWidth = video.videoWidth;
+                    const fullHeight = video.videoHeight;
+
+                    const offCanvas = document.createElement('canvas');
+                    offCanvas.width = fullWidth;
+                    offCanvas.height = fullHeight;
+                    const offCtx = offCanvas.getContext('2d');
+
+                    // Draw the source video at full size
+                    offCtx.drawImage(video, 0, 0, fullWidth, fullHeight);
+
+                    // Run the expensive algorithm on the full image
+                    applyEqualization(offCtx, fullWidth, fullHeight);
+
+                    // Download
+                    const link = document.createElement('a');
+                    // Format date as YYYYMMDD_HHMMSS
+                    const date = new Date().toISOString().replace(/[-:T.]/g, '').slice(0, 14);
+                    link.download = `BW_EQ_${date}.jpg`;
+                    link.href = offCanvas.toDataURL('image/jpeg', 0.95);
+                    link.click();
+
+                } catch (e) {
+                    console.error(e);
+                    alert("Capture failed");
+                } finally {
+                    loader.style.display = 'none';
+                }
+            }, 50); // Small delay to let the loader render
         });
 
-        // 4. Register Service Worker
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('./sw.js');
-        }
+        // Service Worker
+        if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js');
 
-        setupCamera();
+        getCameras();
     </script>
 </body>
 </html>
