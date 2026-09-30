@@ -1,0 +1,75 @@
+@font-face {
+    font-family: "Lexend";
+    src:
+        local("Lexend"),
+        url("../Lexend.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    font-family: "Lexend", sans-serif;
+
+    justify-items: center;
+
+    margin: 0;
+    padding: 0;
+
+    background-color: whitesmoke;
+}
+
+#body {
+    margin: 0;
+    padding: 0;
+
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    width: 100%;
+    max-width: max(100vh, 600px);
+}
+
+a {
+    color: inherit;
+    text-decoration: inherit;
+
+    flex-grow: 1;
+
+    margin: 10px;
+    padding: 10px;
+    border-radius: 10px;
+
+    min-height: 50px;
+    min-width: 75px;
+
+    align-content: center;
+    text-align: center;
+}
+
+a:hover {
+    padding: 7px;
+    border: 3px solid;
+    border-color: lightgray;
+}
+
+a:nth-child(5n + 1) {
+    background-color: lightcoral;
+}
+
+a:nth-child(5n + 2) {
+    background-color: lightsalmon;
+}
+
+a:nth-child(5n + 3) {
+    background-color: lightgreen;
+}
+
+a:nth-child(5n + 4) {
+    background-color: lightskyblue;
+}
+
+a:nth-child(5n + 5) {
+    background-color: plum;
+}
