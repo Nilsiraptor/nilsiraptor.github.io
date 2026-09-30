@@ -170,3 +170,12 @@ img.role {
 .double_a {
     grid-row: 4/6;
 }
+
+p {
+    max-width: 80ch;
+
+    justify-self: center;
+    text-align: center;
+
+    margin-top: 16pt;
+}
