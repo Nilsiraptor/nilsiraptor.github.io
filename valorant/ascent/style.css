@@ -1,0 +1,172 @@
+@font-face {
+    font-family: "Lexend";
+    src:
+        local("Lexend"),
+        url("../Lexend.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    font-family: "Lexend", sans-serif;
+
+    justify-items: center;
+
+    margin: 0;
+    padding: 0;
+
+    background-color: whitesmoke;
+
+
+}
+
+#body {
+    margin: 0;
+    padding: 0;
+
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    width: 100%;
+}
+
+img.header {
+    object-fit: contain;
+}
+
+h1 {
+    text-align: center;
+    margin: 0;
+    margin-bottom: 4px;
+    padding: 0;
+
+    font-size: 64pt;
+}
+
+#main {
+    margin: 0;
+    padding: 0;
+
+    display: grid;
+    grid-template-columns: 1fr 2fr 2fr 2fr 2fr 2fr 1fr;
+    justify-content: center;
+    align-items: start;
+    align-self: center;
+
+    gap: 4px;
+
+    width: fit-content;
+}
+
+.tier {
+    font-size: 32pt;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    min-height: 64px;
+    min-width: 64px;
+
+    height: 100%;
+
+    border-radius: 16px;
+
+    grid-column: 1;
+}
+
+.s {
+    grid-row: 2;
+
+    background-color: #bfff7f;
+}
+
+.a {
+    grid-row: 3;
+
+    background-color: #ffff7f;
+}
+
+.b {
+    grid-row: 4;
+
+    background-color: #ffbf7f;
+}
+
+.c {
+    grid-row: 5;
+
+    background-color: #ff7f7f;
+}
+
+.role {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 4px;
+    border-radius: 16px;
+
+    grid-row: 1;
+
+    background-color: lightgrey;
+}
+
+img.role {
+    height: 64px;
+}
+
+.duelist {
+    grid-column: 2;
+}
+
+.initiator {
+    grid-column: 3;
+}
+
+.controller {
+    grid-column: 4;
+}
+
+.sentinel {
+    grid-column: 5;
+}
+
+.flex {
+    grid-column: 6;
+
+    color: white;
+
+    font-size: 64pt;
+}
+
+.agents {
+    padding: 4px;
+
+    border-radius: 16px;
+
+    min-height: 64px;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    gap: 4px;
+}
+
+.agent {
+    height: 64px;
+
+    border-radius: 12px;
+
+    background-color: whitesmoke;
+}
+
+.double_s {
+    grid-row: 2/4;
+}
+
+.double_a {
+    grid-row: 4/6;
+}
