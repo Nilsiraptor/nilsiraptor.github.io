@@ -73,3 +73,11 @@ a:nth-child(5n + 4) {
 a:nth-child(5n + 5) {
     background-color: plum;
 }
+
+p {
+    max-width: 80ch;
+
+    text-align: center;
+
+    margin-top: 16pt;
+}
